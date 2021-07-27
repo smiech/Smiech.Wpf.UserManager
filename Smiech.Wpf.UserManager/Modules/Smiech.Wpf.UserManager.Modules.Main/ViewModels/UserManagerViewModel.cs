@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Prism.Regions;
@@ -13,7 +14,28 @@ namespace Smiech.Wpf.UserManager.Modules.Main.ViewModels
     {
         private readonly IGoRestApiService _goRestApiService;
         private string _message;
-        private IList<User> _users;
+        private ObservableCollection<UserViewModel> _userViewModels;
+        private bool _isBusy;
+        private Pagination _pagination;
+        private const int DefaultPageNumber = 1;
+
+        public bool IsBusy
+        {
+            get { return _isBusy; }
+            set { SetProperty(ref _isBusy, value); }
+        }
+
+        public Pagination Pagination
+        {
+            get => _pagination;
+            set => SetProperty(ref _pagination, value);
+        }
+
+        public ObservableCollection<UserViewModel> UserViewModels
+        {
+            get => _userViewModels;
+            set => SetProperty(ref _userViewModels, value);
+        }
 
         public string Message
         {
@@ -26,20 +48,16 @@ namespace Smiech.Wpf.UserManager.Modules.Main.ViewModels
         {
             _goRestApiService = goRestApiService;
             Message = goRestApiService.GetMessage();
-            LoadData();
+            LoadData(DefaultPageNumber);
         }
 
-        private async Task LoadData()
+        private async Task LoadData(int pageNumber)
         {
+            IsBusy = true;
             var userResponse = await _goRestApiService.GetUserDataAsync();
-            Users = userResponse.Data.ToList();
-
-        }
-
-        public IList<User> Users
-        {
-            get => _users;
-            set => SetProperty(ref _users, value);
+            var userViewModels = userResponse.Data.Select(x => new UserViewModel(x));
+            UserViewModels = new ObservableCollection<UserViewModel>(userViewModels);
+            IsBusy = false;
         }
 
         public override void OnNavigatedTo(NavigationContext navigationContext)
