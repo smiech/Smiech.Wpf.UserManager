@@ -1,0 +1,67 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31424.327
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{DEED2B6F-A780-4093-A63A-F344ED8B0981}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smiech.Wpf.UserManager.Modules.Main.Tests", "Smiech.Wpf.UserManager\Tests\Smiech.Wpf.UserManager.Modules.Main.Tests\Smiech.Wpf.UserManager.Modules.Main.Tests.csproj", "{F26A89A1-B89B-4A66-858D-35E51F53EF5D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{301F1F6E-7D69-4332-A6A1-43CF0B51E132}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smiech.Wpf.UserManager.Modules.Main", "Smiech.Wpf.UserManager\Modules\Smiech.Wpf.UserManager.Modules.Main\Smiech.Wpf.UserManager.Modules.Main.csproj", "{97518B94-4836-4EBB-9532-A6764F14DD32}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{2A02D82F-86CF-4B35-A2F1-F622312D2AAA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smiech.Wpf.UserManager.Services", "Smiech.Wpf.UserManager\Services\Smiech.Wpf.UserManager.Services\Smiech.Wpf.UserManager.Services.csproj", "{4411C13D-FE7B-4BCD-9644-D61D6A80D1C0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smiech.Wpf.UserManager.Services.Interfaces", "Smiech.Wpf.UserManager\Services\Smiech.Wpf.UserManager.Services.Interfaces\Smiech.Wpf.UserManager.Services.Interfaces.csproj", "{A55D28C8-5D5E-4A87-94B2-0FCB5E3D7367}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smiech.Wpf.UserManager", "Smiech.Wpf.UserManager\Smiech.Wpf.UserManager\Smiech.Wpf.UserManager.csproj", "{135A84D3-A38D-471F-9289-44268DC26E44}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Smiech.Wpf.UserManager.Core", "Smiech.Wpf.UserManager\Smiech.Wpf.UserManager.Core\Smiech.Wpf.UserManager.Core.csproj", "{F10A32ED-CE33-4B7F-BD30-3A8775432F43}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F26A89A1-B89B-4A66-858D-35E51F53EF5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F26A89A1-B89B-4A66-858D-35E51F53EF5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F26A89A1-B89B-4A66-858D-35E51F53EF5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F26A89A1-B89B-4A66-858D-35E51F53EF5D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97518B94-4836-4EBB-9532-A6764F14DD32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97518B94-4836-4EBB-9532-A6764F14DD32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97518B94-4836-4EBB-9532-A6764F14DD32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97518B94-4836-4EBB-9532-A6764F14DD32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4411C13D-FE7B-4BCD-9644-D61D6A80D1C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4411C13D-FE7B-4BCD-9644-D61D6A80D1C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4411C13D-FE7B-4BCD-9644-D61D6A80D1C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4411C13D-FE7B-4BCD-9644-D61D6A80D1C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A55D28C8-5D5E-4A87-94B2-0FCB5E3D7367}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A55D28C8-5D5E-4A87-94B2-0FCB5E3D7367}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A55D28C8-5D5E-4A87-94B2-0FCB5E3D7367}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A55D28C8-5D5E-4A87-94B2-0FCB5E3D7367}.Release|Any CPU.Build.0 = Release|Any CPU
+		{135A84D3-A38D-471F-9289-44268DC26E44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{135A84D3-A38D-471F-9289-44268DC26E44}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{135A84D3-A38D-471F-9289-44268DC26E44}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{135A84D3-A38D-471F-9289-44268DC26E44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F10A32ED-CE33-4B7F-BD30-3A8775432F43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F10A32ED-CE33-4B7F-BD30-3A8775432F43}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F10A32ED-CE33-4B7F-BD30-3A8775432F43}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F10A32ED-CE33-4B7F-BD30-3A8775432F43}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F26A89A1-B89B-4A66-858D-35E51F53EF5D} = {DEED2B6F-A780-4093-A63A-F344ED8B0981}
+		{97518B94-4836-4EBB-9532-A6764F14DD32} = {301F1F6E-7D69-4332-A6A1-43CF0B51E132}
+		{4411C13D-FE7B-4BCD-9644-D61D6A80D1C0} = {2A02D82F-86CF-4B35-A2F1-F622312D2AAA}
+		{A55D28C8-5D5E-4A87-94B2-0FCB5E3D7367} = {2A02D82F-86CF-4B35-A2F1-F622312D2AAA}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {48033496-4B80-4D60-8719-CF229F1B3395}
+	EndGlobalSection
+EndGlobal
