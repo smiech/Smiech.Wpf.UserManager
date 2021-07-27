@@ -1,0 +1,12 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Smiech.Wpf.UserManager.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="GoRestApiBaseUrl" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">https://gorest.co.in/public-api</Value>
+    </Setting>
+    <Setting Name="GoRestApiToken" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">fa114107311259f5f33e70a5d85de34a2499b4401da069af0b1d835cd5ec0d56</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
