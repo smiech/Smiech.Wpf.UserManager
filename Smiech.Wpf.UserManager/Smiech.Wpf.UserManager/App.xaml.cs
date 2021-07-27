@@ -20,12 +20,12 @@ namespace Smiech.Wpf.UserManager
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            containerRegistry.RegisterSingleton<IMessageService, MessageService>();
+            containerRegistry.RegisterSingleton<IGoRestApiService, MessageService>();
         }
 
         protected override void ConfigureModuleCatalog(IModuleCatalog moduleCatalog)
         {
-            moduleCatalog.AddModule<ModuleNameModule>();
+            moduleCatalog.AddModule<MainModule>();
         }
     }
 }

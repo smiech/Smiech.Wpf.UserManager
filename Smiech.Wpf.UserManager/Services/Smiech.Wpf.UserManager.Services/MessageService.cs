@@ -2,7 +2,7 @@
 
 namespace Smiech.Wpf.UserManager.Services
 {
-    public class MessageService : IMessageService
+    public class MessageService : IGoRestApiService
     {
         public string GetMessage()
         {

@@ -4,7 +4,7 @@ using Smiech.Wpf.UserManager.Services.Interfaces;
 
 namespace Smiech.Wpf.UserManager.Modules.Main.ViewModels
 {
-    public class ViewAViewModel : RegionViewModelBase
+    public class UserManagerViewModel : RegionViewModelBase
     {
         private string _message;
         public string Message
@@ -13,7 +13,7 @@ namespace Smiech.Wpf.UserManager.Modules.Main.ViewModels
             set { SetProperty(ref _message, value); }
         }
 
-        public ViewAViewModel(IRegionManager regionManager, IMessageService messageService) :
+        public UserManagerViewModel(IRegionManager regionManager, IGoRestApiService messageService) :
             base(regionManager)
         {
             Message = messageService.GetMessage();
