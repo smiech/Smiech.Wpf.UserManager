@@ -1,23 +1,24 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Prism.Commands;
 using Prism.Regions;
 using Smiech.Wpf.UserManager.Core.Mvvm;
 using Smiech.Wpf.UserManager.Services.Interfaces;
 using Smiech.Wpf.UserManager.Services.Interfaces.Models;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using System.Windows;
 
 namespace Smiech.Wpf.UserManager.Modules.Main.ViewModels
 {
     public class UserManagerViewModel : RegionViewModelBase
     {
         private readonly IGoRestApiService _goRestApiService;
-        private string _message;
         private ObservableCollection<UserViewModel> _userViewModels;
         private bool _isBusy;
         private Pagination _pagination;
         private const int DefaultPageNumber = 1;
+
 
         public bool IsBusy
         {
@@ -37,32 +38,94 @@ namespace Smiech.Wpf.UserManager.Modules.Main.ViewModels
             set => SetProperty(ref _userViewModels, value);
         }
 
-        public string Message
+        public ICommand GoToPageCommand => new DelegateCommand<int?>(GoToPage);
+        public ICommand GoToNextPageCommand => new DelegateCommand(() => GoToPage(Pagination.Page + 1));
+        public ICommand GoToPreviousPageCommand => new DelegateCommand(() => GoToPage(Pagination.Page - 1));
+        public ICommand CreateUserCommand => new DelegateCommand<UserViewModel>(CreateUser);
+        public ICommand UpdateUserCommand => new DelegateCommand<UserViewModel>(UpdateUser);
+        public ICommand DeleteUserCommand => new DelegateCommand<UserViewModel>(DeleteUser);
+
+        private async void DeleteUser(UserViewModel userViewModel)
         {
-            get { return _message; }
-            set { SetProperty(ref _message, value); }
+            userViewModel.IsBusy = true;
+            try
+            {
+                await _goRestApiService.DeleteUser(userViewModel.Id);
+                UserViewModels.Remove(userViewModel);
+            }
+            catch
+            {
+                DisplayError("Error deleting user");
+                userViewModel.IsBusy = false;
+            }
+        }
+
+        private async void UpdateUser(UserViewModel userViewModel)
+        {
+            userViewModel.IsBusy = true;
+            var userToUpdate = DataMapper.ToUserModel(userViewModel);
+            try
+            {
+                await _goRestApiService.UpdateUser(userToUpdate);
+                userViewModel.IsDirty = false;
+            }
+            catch
+            {
+                DisplayError("Error updating user");
+            }
+            finally
+            {
+                userViewModel.IsBusy = false;
+            }
+        }
+
+        private async void CreateUser(UserViewModel userViewModel)
+        {
+            userViewModel.IsBusy = true;
+            var userToCreate = DataMapper.ToUserModel(userViewModel);
+            try
+            {
+                var userData = await _goRestApiService.CreateUser(userToCreate);
+                userViewModel.Id = userData.Data.Id;
+                userViewModel.IsDirty = false;
+
+            }
+            catch
+            {
+                DisplayError("Error creating user");
+            }
+            finally
+            {
+                userViewModel.IsBusy = false;
+            }
+        }
+
+        // poor man's error handling xD
+        private void DisplayError(string message)
+        {
+            MessageBox.Show(message,"Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
         public UserManagerViewModel(IRegionManager regionManager, IGoRestApiService goRestApiService) :
             base(regionManager)
         {
             _goRestApiService = goRestApiService;
-            Message = goRestApiService.GetMessage();
             LoadData(DefaultPageNumber);
         }
 
         private async Task LoadData(int pageNumber)
         {
             IsBusy = true;
-            var userResponse = await _goRestApiService.GetUserDataAsync();
+            var userResponse = await _goRestApiService.GetUserDataAsync(pageNumber);
             var userViewModels = userResponse.Data.Select(x => new UserViewModel(x));
-            UserViewModels = new ObservableCollection<UserViewModel>(userViewModels);
+            UserViewModels = new ObservableCollection<UserViewModel>(userViewModels.ToList());
+            Pagination = userResponse.Meta.Pagination;
             IsBusy = false;
         }
 
-        public override void OnNavigatedTo(NavigationContext navigationContext)
+        private async void GoToPage(int? pageNumber)
         {
-            //do something
+            await LoadData(pageNumber ?? DefaultPageNumber);
         }
     }
 }

@@ -26,6 +26,7 @@ namespace Smiech.Wpf.UserManager
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            containerRegistry.RegisterInstance(Log.Logger).UseAggregateLogger();
             containerRegistry.RegisterSingleton<IGoRestApiService>(x=>
                 new GoRestApiService(new Uri(Settings.Default.GoRestApiBaseUrl), new BearerAuthenticator(Settings.Default.GoRestApiToken)));
         }
@@ -41,7 +42,7 @@ namespace Smiech.Wpf.UserManager
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
                 .Enrich.FromLogContext()
-                .WriteTo.File(path: "Smiech.Wpf.UserManager.log", rollingInterval: RollingInterval.Day)
+                .WriteTo.File(path: "Smiech.Wpf.UserManager.log")
                 .CreateLogger();
             TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;

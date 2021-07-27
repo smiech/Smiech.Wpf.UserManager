@@ -15,6 +15,10 @@ namespace Smiech.Wpf.UserManager.Modules.Main.ViewModels
         private bool _isDirty;
         private bool _isBusy;
 
+        public UserViewModel()
+        {
+        }
+
         public UserViewModel(User userModel)
         {
             if (userModel == null) throw new ArgumentNullException(nameof(userModel));
@@ -59,7 +63,14 @@ namespace Smiech.Wpf.UserManager.Modules.Main.ViewModels
         public bool IsDirty
         {
             get => _isDirty;
-            set => SetProperty(ref _isDirty, value);
+            set
+            {
+                // dirty hack, heh
+                if (Id != 0)
+                {
+                    SetProperty(ref _isDirty, value);
+                }
+            }
         }
 
         public bool IsBusy
@@ -70,7 +81,7 @@ namespace Smiech.Wpf.UserManager.Modules.Main.ViewModels
 
         protected override void OnPropertyChanged(PropertyChangedEventArgs args)
         {
-            if (args.PropertyName != nameof(IsBusy))
+            if (args.PropertyName != nameof(IsBusy) && args.PropertyName != nameof(IsDirty))
             {
                 IsDirty = true;
             }

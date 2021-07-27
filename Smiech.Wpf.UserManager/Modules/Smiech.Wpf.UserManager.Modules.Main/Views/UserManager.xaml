@@ -10,6 +10,9 @@
 
         <ResourceDictionary>
             <converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+            <converters:BooleanConverter x:Key="BooleanConverter" />
+            <converters:NotZeroConverter x:Key="NotZeroConverter" />
+            <converters:IsZeroConverter x:Key="IsZeroConverter" />
             <lists:GenderList x:Key="GenderList"></lists:GenderList>
             <lists:StatusList x:Key="StatusList"></lists:StatusList>
         </ResourceDictionary>
@@ -17,27 +20,64 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
-        <TextBlock Text="{Binding Message}"
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center"
-                   FontSize="24"/>
+        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" >
+            <TextBlock> 
+                <Run Text="Page"/>
+                <Run Text="{Binding Pagination.Page}"></Run>
+                <Run Text=" of "/>
+                <Run Text="{Binding Pagination.Pages}"></Run>
+            </TextBlock>
+            <TextBox MinWidth ="25" Text="{Binding Pagination.Page}"></TextBox>
+            <Button Content="Go to page" Command="{Binding GoToPageCommand}" CommandParameter="{Binding Pagination.Page}"></Button>
+            <Button Content="&lt;&lt;" Command="{Binding GoToPreviousPageCommand}"></Button>
+            <Button Content=">>" Command="{Binding GoToNextPageCommand}"></Button>
+        </StackPanel>
         <DataGrid  Grid.Row="1"
                    IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBooleanConverter}}" 
                    ItemsSource="{Binding UserViewModels}" 
                    AutoGenerateColumns="False"
                    CanUserAddRows="True"
                    CanUserDeleteRows="False">
+            <DataGrid.RowStyle>
+                <Style TargetType="{x:Type DataGridRow}">
+                    <Setter Property="IsEnabled" Value="{Binding IsBusy, Converter={StaticResource InverseBooleanConverter}}"/>
+                </Style>
+            </DataGrid.RowStyle>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Id" Binding="{Binding Id}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
-                <DataGridTextColumn Header="Email" Binding="{Binding Email}"/>
+                <DataGridTextColumn Header="Name" Binding="{Binding Name, UpdateSourceTrigger=LostFocus}"/>
+                <DataGridTextColumn Header="Email" Binding="{Binding Email, UpdateSourceTrigger=LostFocus}"/>
                 <DataGridComboBoxColumn Header="Gender" ItemsSource="{StaticResource GenderList}" SelectedValueBinding="{Binding Gender, UpdateSourceTrigger=LostFocus}"/>
                 <DataGridComboBoxColumn Header="Status" ItemsSource="{StaticResource StatusList}" SelectedValueBinding="{Binding Status, UpdateSourceTrigger=LostFocus}"/>
                 <DataGridTextColumn Header="IsDirty" Binding="{Binding IsDirty}" IsReadOnly="True"/>
-               
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Content="Update" Margin="1" IsEnabled="{Binding IsDirty, Converter= {StaticResource BooleanConverter}, FallbackValue=false}"
+                                        Command="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                    AncestorType={x:Type UserControl}}, Path=DataContext.UpdateUserCommand}" CommandParameter="{Binding .}">
+                                </Button>
+                                <Button Content="Save" Margin="1" IsEnabled="{Binding Id, Converter= {StaticResource IsZeroConverter}, FallbackValue=false}"
+                                        Command="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                    AncestorType={x:Type UserControl}}, Path=DataContext.CreateUserCommand}" CommandParameter="{Binding .}">
+                                </Button>
+                                <Button Content="Delete" Margin="1" IsEnabled="{Binding Id, Converter = {StaticResource NotZeroConverter }, FallbackValue=false}"
+                                        Command="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                    AncestorType={x:Type UserControl}}, Path=DataContext.DeleteUserCommand}" CommandParameter="{Binding .}">
+                                </Button>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
+        <StackPanel Grid.Row="2" Orientation="Horizontal">
+            <Button Content="Update All " Command="{Binding UpdateAllUsersCommand}"></Button>
+            <Button Content="Save All" Command="{Binding SaveAllUsersCommand}"></Button>
+        </StackPanel>
     </Grid>
 </UserControl>

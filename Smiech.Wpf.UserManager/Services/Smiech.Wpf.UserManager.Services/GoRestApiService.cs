@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Net.Http;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using RestSharp;
 using RestSharp.Authenticators;
+using RestSharp.Serializers.NewtonsoftJson;
 using Smiech.Wpf.UserManager.Services.Interfaces;
 using Smiech.Wpf.UserManager.Services.Interfaces.Models;
 
@@ -9,6 +13,7 @@ namespace Smiech.Wpf.UserManager.Services
 {
     public class GoRestApiService : IGoRestApiService
     {
+        private const string UserResourcePath = "/users";
         private readonly Uri _baseUri;
         private readonly IAuthenticator _authenticator;
 
@@ -18,37 +23,51 @@ namespace Smiech.Wpf.UserManager.Services
             _authenticator = authenticator;
         }
 
-        public string GetMessage()
-        {
-            return "Hello from the Message Service";
-        }
-
         public Task<UserResponse> GetUserDataAsync(int page = 1)
         {
-            var request = new RestRequest("/users", Method.GET);
+            var request = new RestRequest(UserResourcePath, Method.GET);
             request.AddQueryParameter("page", page.ToString());
-            var response =  GetClient().GetAsync<UserResponse>(request);
+            return GetClient().GetAsync<UserResponse>(request);
+        }
+
+
+        public async Task<CreateUserResponse> CreateUser(User userToCreate)
+        {
+            if (userToCreate == null) throw new ArgumentNullException(nameof(userToCreate));
+            var request = new RestRequest(UserResourcePath);
+            request.AddJsonBody(userToCreate);
+            var response = await GetClient().PostAsync<CreateUserResponse>(request);
             return response;
         }
 
-        public Task CreateUser(User userToCreate)
+        public async Task UpdateUser(User userToUpdate)
         {
-            throw new System.NotImplementedException();
+            if (userToUpdate == null) throw new ArgumentNullException(nameof(userToUpdate));
+            var request = new RestRequest($"{UserResourcePath}/{userToUpdate.Id}", Method.PUT);
+            request.AddJsonBody(userToUpdate);
+            await EnsureSuccessfullResponse(request);
         }
 
-        public Task UpdateUser(User userToUpdate)
+        private async Task EnsureSuccessfullResponse(RestRequest request)
         {
-            throw new System.NotImplementedException();
+            var response = await GetClient().ExecuteAsync(request);
+            if (!response.IsSuccessful)
+            {
+                throw new HttpRequestException($"UpdateUser failed with {response.StatusCode}: {response.ErrorMessage}",
+                    response.ErrorException);
+            }
         }
 
-        public Task DeleteUser(int userId)
+        public async Task DeleteUser(int userId)
         {
-            throw new System.NotImplementedException();
+            var request = new RestRequest($"{UserResourcePath}/{userId}", Method.DELETE);
+            await EnsureSuccessfullResponse(request);
         }
 
         private RestClient GetClient()
         {
             var restClient = new RestSharp.RestClient(_baseUri) { Authenticator = _authenticator };
+            restClient.UseNewtonsoftJson(new JsonSerializerSettings() { ContractResolver = new CamelCasePropertyNamesContractResolver() });
             return restClient;
         }
     }

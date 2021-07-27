@@ -4,16 +4,16 @@ using System.Windows.Data;
 
 namespace Smiech.Wpf.UserManager.Core.Converters
 {
-    public class InverseBooleanConverter : IValueConverter
+    public class IsZeroConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return (value is bool b) && !b;
+            return value is int number && number == 0;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return (value is bool b) && !b;
+            throw new NotImplementedException();
         }
     }
 }

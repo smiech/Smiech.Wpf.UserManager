@@ -5,7 +5,8 @@
     <AssemblyName>Smiech.Wpf.UserManager.Modules.Main</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Prism.Wpf" Version="8.0.0.1909" />
+    <PackageReference Include="Prism.Plugin.Logging.Abstractions" Version="8.1.16" />
+    <PackageReference Include="Prism.Wpf" Version="8.1.97" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Smiech.Wpf.UserManager.Core\Smiech.Wpf.UserManager.Core.csproj" />
