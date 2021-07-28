@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -30,15 +31,23 @@ namespace Smiech.Wpf.UserManager.Services
             return GetClient().GetAsync<UserResponse>(request);
         }
 
-        public Task<UserResponse> GetUserDataByQuery(UserQuery query, int page = 1)
+        public async Task<UserResponse> GetUserDataByQuery(UserQuery query, int page = 1)
         {
             if (query == null) throw new ArgumentNullException(nameof(query));
 
+            if (query.Id > 0)
+            {
+                var response = await GetUser(query.Id.Value);
+                return new UserResponse()
+                {
+                    Data = new List<User>() { response.Data }
+                };
+            }
             var request = new RestRequest(UserResourcePath, Method.GET);
             request.AddQueryParameter("page", page.ToString());
             if (query.Email != null)
             {
-                request.AddQueryParameter(nameof(query.Email).ToLowerInvariant(), query.Email);
+                request.AddQueryParameter(nameof(query.Email).ToLowerInvariant(), query.Email.ToLowerInvariant());
             }
 
             if (query.Gender != null)
@@ -48,7 +57,7 @@ namespace Smiech.Wpf.UserManager.Services
 
             if (query.Name != null)
             {
-                request.AddQueryParameter(nameof(query.Name).ToLowerInvariant(), query.Name);
+                request.AddQueryParameter(nameof(query.Name).ToLowerInvariant(), query.Name.ToLowerInvariant());
             }
 
             if (query.Status != null)
@@ -56,15 +65,23 @@ namespace Smiech.Wpf.UserManager.Services
                 request.AddQueryParameter(nameof(query.Status).ToLowerInvariant(), query.Status);
             }
 
-            return GetClient().GetAsync<UserResponse>(request);
+            return await GetClient().GetAsync<UserResponse>(request);
         }
 
-        public async Task<CreateUserResponse> CreateUser(User userToCreate)
+        public async Task<SingleUserResponse> GetUser(int userId)
+        {
+            if (userId <= 0) throw new ArgumentOutOfRangeException(nameof(userId));
+            var request = new RestRequest($"{UserResourcePath}/{userId}");
+            var response = await GetClient().GetAsync<SingleUserResponse>(request);
+            return response;
+        }
+
+        public async Task<SingleUserResponse> CreateUser(User userToCreate)
         {
             if (userToCreate == null) throw new ArgumentNullException(nameof(userToCreate));
             var request = new RestRequest(UserResourcePath);
             request.AddJsonBody(userToCreate);
-            var response = await GetClient().PostAsync<CreateUserResponse>(request);
+            var response = await GetClient().PostAsync<SingleUserResponse>(request);
             return response;
         }
 

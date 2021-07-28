@@ -8,7 +8,7 @@ namespace Smiech.Wpf.UserManager.Services.Interfaces
     {
         Task<UserResponse> GetUserDataAsync(int page = 1);
         Task<UserResponse> GetUserDataByQuery(UserQuery query, int page = 1);
-        Task<CreateUserResponse> CreateUser(User userToCreate);
+        Task<SingleUserResponse> CreateUser(User userToCreate);
         Task UpdateUser(User userToUpdate);
         Task DeleteUser(int userId);
     }

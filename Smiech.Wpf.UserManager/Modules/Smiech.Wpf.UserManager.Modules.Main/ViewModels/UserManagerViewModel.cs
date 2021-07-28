@@ -23,25 +23,25 @@ namespace Smiech.Wpf.UserManager.Modules.Main.ViewModels
         public bool IsBusy
         {
             get { return _isBusy; }
-            set { SetProperty(ref _isBusy, value); }
+            private set { SetProperty(ref _isBusy, value); }
         }
 
         public Pagination Pagination
         {
             get => _pagination;
-            set => SetProperty(ref _pagination, value);
+            private set => SetProperty(ref _pagination, value);
         }
 
         public UserQueryViewModel UserQueryViewModel
         {
             get => _userQueryViewModel;
-            set => SetProperty(ref _userQueryViewModel , value);
+            private set => SetProperty(ref _userQueryViewModel , value);
         }
 
         public ObservableCollection<UserViewModel> UserViewModels
         {
             get => _userViewModels;
-            set => SetProperty(ref _userViewModels, value);
+            private set => SetProperty(ref _userViewModels, value);
         }
 
         public ICommand GoToPageCommand => new DelegateCommand<int?>(GoToPage);
@@ -151,11 +151,11 @@ namespace Smiech.Wpf.UserManager.Modules.Main.ViewModels
 
                 var userViewModels = userResponse.Data.Select(x => new UserViewModel(x));
                 UserViewModels = new ObservableCollection<UserViewModel>(userViewModels.ToList());
-                Pagination = userResponse.Meta.Pagination;
+                Pagination = userResponse.Meta?.Pagination;
             }
             catch
             {
-                DisplayError("Error creating user");
+                DisplayError("Error loading user data");
             }
             finally
             {

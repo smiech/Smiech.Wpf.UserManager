@@ -2,16 +2,15 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:prism="http://prismlibrary.com/"
-             xmlns:viewModels="clr-namespace:Smiech.Wpf.UserManager.Modules.Main.ViewModels"
              xmlns:converters="clr-namespace:Smiech.Wpf.UserManager.Core.Converters;assembly=Smiech.Wpf.UserManager.Core"
              xmlns:lists="clr-namespace:Smiech.Wpf.UserManager.Modules.Main.ViewModels.Lists"
              prism:ViewModelLocator.AutoWireViewModel="True" >
     <UserControl.Resources>
-
         <ResourceDictionary>
             <converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
             <converters:BooleanConverter x:Key="BooleanConverter" />
             <converters:NotZeroConverter x:Key="NotZeroConverter" />
+            <converters:NotNullConverter x:Key="NotNullConverter" />
             <converters:IsZeroConverter x:Key="IsZeroConverter" />
             <lists:GenderList x:Key="GenderList"></lists:GenderList>
             <lists:StatusList x:Key="StatusList"></lists:StatusList>
@@ -23,7 +22,7 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" >
+        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" IsEnabled="{Binding Pagination, Converter={StaticResource NotNullConverter}}">
             <TextBlock> 
                 <Run Text="Page"/>
                 <Run Text="{Binding Pagination.Page}"></Run>
@@ -77,6 +76,8 @@
         <Border Grid.Row="2">
             <StackPanel Width="200" HorizontalAlignment="Left">
                 <Label Content="Search" HorizontalAlignment="Center"></Label>
+                <Label Content="User ID"></Label>
+                <TextBox Text="{Binding UserQueryViewModel.Id}"></TextBox>
                 <Label Content="User name"></Label>
                 <TextBox Text="{Binding UserQueryViewModel.Name}"></TextBox>
                 <Label Content="Gender"></Label>
