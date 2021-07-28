@@ -45,7 +45,7 @@ namespace Smiech.Wpf.UserManager.Services
             }
             var request = new RestRequest(UserResourcePath, Method.GET);
             request.AddQueryParameter("page", page.ToString());
-            if (query.Email != null)
+            if (!String.IsNullOrEmpty(query.Email))
             {
                 request.AddQueryParameter(nameof(query.Email).ToLowerInvariant(), query.Email.ToLowerInvariant());
             }
@@ -55,7 +55,7 @@ namespace Smiech.Wpf.UserManager.Services
                 request.AddQueryParameter(nameof(query.Gender).ToLowerInvariant(), query.Gender);
             }
 
-            if (query.Name != null)
+            if (!String.IsNullOrEmpty(query.Name))
             {
                 request.AddQueryParameter(nameof(query.Name).ToLowerInvariant(), query.Name.ToLowerInvariant());
             }

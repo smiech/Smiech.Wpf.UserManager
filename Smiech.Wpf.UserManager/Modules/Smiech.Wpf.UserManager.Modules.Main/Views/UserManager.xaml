@@ -77,7 +77,7 @@
             <StackPanel Width="200" HorizontalAlignment="Left">
                 <Label Content="Search" HorizontalAlignment="Center"></Label>
                 <Label Content="User ID"></Label>
-                <TextBox Text="{Binding UserQueryViewModel.Id}"></TextBox>
+                <TextBox Text="{Binding UserQueryViewModel.Id, TargetNullValue=''}"></TextBox>
                 <Label Content="User name"></Label>
                 <TextBox Text="{Binding UserQueryViewModel.Name}"></TextBox>
                 <Label Content="Gender"></Label>
