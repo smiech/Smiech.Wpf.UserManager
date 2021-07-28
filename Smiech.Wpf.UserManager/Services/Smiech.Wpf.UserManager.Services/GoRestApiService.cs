@@ -30,6 +30,34 @@ namespace Smiech.Wpf.UserManager.Services
             return GetClient().GetAsync<UserResponse>(request);
         }
 
+        public Task<UserResponse> GetUserDataByQuery(UserQuery query, int page = 1)
+        {
+            if (query == null) throw new ArgumentNullException(nameof(query));
+
+            var request = new RestRequest(UserResourcePath, Method.GET);
+            request.AddQueryParameter("page", page.ToString());
+            if (query.Email != null)
+            {
+                request.AddQueryParameter(nameof(query.Email).ToLowerInvariant(), query.Email);
+            }
+
+            if (query.Gender != null)
+            {
+                request.AddQueryParameter(nameof(query.Gender).ToLowerInvariant(), query.Gender);
+            }
+
+            if (query.Name != null)
+            {
+                request.AddQueryParameter(nameof(query.Name).ToLowerInvariant(), query.Name);
+            }
+
+            if (query.Status != null)
+            {
+                request.AddQueryParameter(nameof(query.Status).ToLowerInvariant(), query.Status);
+            }
+
+            return GetClient().GetAsync<UserResponse>(request);
+        }
 
         public async Task<CreateUserResponse> CreateUser(User userToCreate)
         {

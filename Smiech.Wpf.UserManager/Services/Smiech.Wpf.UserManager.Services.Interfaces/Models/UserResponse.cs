@@ -8,11 +8,4 @@ namespace Smiech.Wpf.UserManager.Services.Interfaces.Models
         public Metadata Meta { get; set; }
         public IEnumerable<User> Data { get; set; }
     }
-
-    public class CreateUserResponse
-    {
-        public int Code { get; set; }
-        public Metadata Meta { get; set; }
-        public User Data { get; set; }
-    }
 }

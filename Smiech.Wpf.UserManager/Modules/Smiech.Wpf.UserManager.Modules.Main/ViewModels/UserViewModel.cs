@@ -15,10 +15,6 @@ namespace Smiech.Wpf.UserManager.Modules.Main.ViewModels
         private bool _isDirty;
         private bool _isBusy;
 
-        public UserViewModel()
-        {
-        }
-
         public UserViewModel(User userModel)
         {
             if (userModel == null) throw new ArgumentNullException(nameof(userModel));

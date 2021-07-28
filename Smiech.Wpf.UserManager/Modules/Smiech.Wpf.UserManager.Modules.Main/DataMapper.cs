@@ -5,7 +5,7 @@ namespace Smiech.Wpf.UserManager.Modules.Main
 {
     static class DataMapper
     {
-        public static User ToUserModel(UserViewModel userViewModel)
+        public static User Map(UserViewModel userViewModel)
         {
             return new User()
             {
@@ -14,6 +14,17 @@ namespace Smiech.Wpf.UserManager.Modules.Main
                 Id = userViewModel.Id,
                 Name = userViewModel.Name,
                 Status = userViewModel.Status
+            };
+        }
+        public static UserQuery Map(UserQueryViewModel userQueryViewModel)
+        {
+            return new UserQuery()
+            {
+                Email = userQueryViewModel.Email,
+                Gender = userQueryViewModel.Gender,
+                Id = userQueryViewModel.Id,
+                Name = userQueryViewModel.Name,
+                Status = userQueryViewModel.Status
             };
         }
     }

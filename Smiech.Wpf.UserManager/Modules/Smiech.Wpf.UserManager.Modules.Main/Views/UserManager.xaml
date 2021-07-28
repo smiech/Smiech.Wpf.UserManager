@@ -17,7 +17,7 @@
             <lists:StatusList x:Key="StatusList"></lists:StatusList>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid>
+    <Grid IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBooleanConverter}}" >
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -36,7 +36,6 @@
             <Button Content=">>" Command="{Binding GoToNextPageCommand}"></Button>
         </StackPanel>
         <DataGrid  Grid.Row="1"
-                   IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBooleanConverter}}" 
                    ItemsSource="{Binding UserViewModels}" 
                    AutoGenerateColumns="False"
                    CanUserAddRows="True"
@@ -75,9 +74,20 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
-        <StackPanel Grid.Row="2" Orientation="Horizontal">
-            <Button Content="Update All " Command="{Binding UpdateAllUsersCommand}"></Button>
-            <Button Content="Save All" Command="{Binding SaveAllUsersCommand}"></Button>
-        </StackPanel>
+        <Border Grid.Row="2">
+            <StackPanel Width="200" HorizontalAlignment="Left">
+                <Label Content="Search" HorizontalAlignment="Center"></Label>
+                <Label Content="User name"></Label>
+                <TextBox Text="{Binding UserQueryViewModel.Name}"></TextBox>
+                <Label Content="Gender"></Label>
+                <ComboBox ItemsSource="{StaticResource GenderList}" SelectedItem="{Binding UserQueryViewModel.Gender}"></ComboBox>
+                <Label Content="Status"></Label>
+                <ComboBox ItemsSource="{StaticResource StatusList}"  Text="{Binding UserQueryViewModel.Status}"></ComboBox>
+                <Label Content="Email"></Label>
+                <TextBox Text="{Binding UserQueryViewModel.Email}"></TextBox>
+                <Button Content="Search" Command="{Binding GetUsersByQueryCommand}"></Button>
+                <Button Content="Reset search " Command="{Binding ResetUserQueryCommand}"></Button>
+            </StackPanel>
+        </Border>
     </Grid>
 </UserControl>
