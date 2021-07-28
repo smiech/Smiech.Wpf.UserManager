@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using AutoFixture;
+﻿using AutoFixture;
 using AutoFixture.AutoMoq;
 using FluentAssertions;
-using FluentAssertions.Common;
 using Moq;
 using Smiech.Wpf.UserManager.Modules.Main.ViewModels;
 using Smiech.Wpf.UserManager.Services.Interfaces;
@@ -35,7 +31,7 @@ namespace Smiech.Wpf.UserManager.Modules.Main.Tests.ViewModels
 
             var userManagerViewModel = _fixture.Create<UserManagerViewModel>();
 
-            _goRestApiMock.Verify(x=>x.GetUserDataAsync(DefaultPageNumber), Times.Once);
+            _goRestApiMock.Verify(x => x.GetUserDataAsync(DefaultPageNumber), Times.Once);
             userManagerViewModel.UserViewModels.Should().BeEquivalentTo(expectedUserResponse.Data);
             userManagerViewModel.Pagination.Should().BeEquivalentTo(expectedUserResponse.Meta.Pagination);
         }
@@ -55,9 +51,8 @@ namespace Smiech.Wpf.UserManager.Modules.Main.Tests.ViewModels
             userManagerViewModel.GetUsersByQueryCommand.Execute(null);
 
 
-            _goRestApiMock.Verify(x => 
-                x.GetUserDataByQuery(It.Is<UserQuery>((f)=> f.Email == expectedParameters.Email), DefaultPageNumber), Times.Once);
+            _goRestApiMock.Verify(x =>
+                x.GetUserDataByQuery(It.Is<UserQuery>((f) => f.Email == expectedParameters.Email), DefaultPageNumber), Times.Once);
         }
-
     }
 }

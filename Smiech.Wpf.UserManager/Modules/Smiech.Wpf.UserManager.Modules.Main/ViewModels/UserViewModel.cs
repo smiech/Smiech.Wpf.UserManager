@@ -1,7 +1,7 @@
-﻿using System;
-using System.ComponentModel;
-using Smiech.Wpf.UserManager.Core.Mvvm;
+﻿using Smiech.Wpf.UserManager.Core.Mvvm;
 using Smiech.Wpf.UserManager.Services.Interfaces.Models;
+using System;
+using System.ComponentModel;
 
 namespace Smiech.Wpf.UserManager.Modules.Main.ViewModels
 {

@@ -1,6 +1,6 @@
 ﻿
-using System.Threading.Tasks;
 using Smiech.Wpf.UserManager.Services.Interfaces.Models;
+using System.Threading.Tasks;
 
 namespace Smiech.Wpf.UserManager.Services.Interfaces
 {

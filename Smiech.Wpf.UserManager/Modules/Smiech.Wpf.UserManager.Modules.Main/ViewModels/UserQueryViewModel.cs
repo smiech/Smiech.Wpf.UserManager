@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using Smiech.Wpf.UserManager.Core.Mvvm;
+﻿using Smiech.Wpf.UserManager.Core.Mvvm;
 
 namespace Smiech.Wpf.UserManager.Modules.Main.ViewModels
 {

@@ -6,8 +6,8 @@ using Smiech.Wpf.UserManager.Services.Interfaces.Models;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using System.Windows;
+using System.Windows.Input;
 
 namespace Smiech.Wpf.UserManager.Modules.Main.ViewModels
 {
@@ -35,7 +35,7 @@ namespace Smiech.Wpf.UserManager.Modules.Main.ViewModels
         public UserQueryViewModel UserQueryViewModel
         {
             get => _userQueryViewModel;
-            private set => SetProperty(ref _userQueryViewModel , value);
+            private set => SetProperty(ref _userQueryViewModel, value);
         }
 
         public ObservableCollection<UserViewModel> UserViewModels

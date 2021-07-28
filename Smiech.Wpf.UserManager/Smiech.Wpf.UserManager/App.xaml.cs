@@ -1,16 +1,15 @@
-﻿using System;
-using System.Threading.Tasks;
-using Prism.Ioc;
+﻿using Prism.Ioc;
 using Prism.Modularity;
+using Serilog;
 using Smiech.Wpf.UserManager.Modules.Main;
+using Smiech.Wpf.UserManager.Properties;
 using Smiech.Wpf.UserManager.Services;
 using Smiech.Wpf.UserManager.Services.Interfaces;
 using Smiech.Wpf.UserManager.Views;
+using System;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
-using Serilog;
-using Serilog.Events;
-using Smiech.Wpf.UserManager.Properties;
 
 namespace Smiech.Wpf.UserManager
 {
@@ -27,7 +26,7 @@ namespace Smiech.Wpf.UserManager
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterInstance(Log.Logger).UseAggregateLogger();
-            containerRegistry.RegisterSingleton<IGoRestApiService>(x=>
+            containerRegistry.RegisterSingleton<IGoRestApiService>(x =>
                 new GoRestApiService(new Uri(Settings.Default.GoRestApiBaseUrl), new BearerAuthenticator(Settings.Default.GoRestApiToken)));
         }
 
