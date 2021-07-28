@@ -1,0 +1,94 @@
+﻿<UserControl x:Class="Smiech.Wpf.UserManager.Modules.Main.Views.UserManager"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:prism="http://prismlibrary.com/"
+             xmlns:converters="clr-namespace:Smiech.Wpf.UserManager.Core.Converters;assembly=Smiech.Wpf.UserManager.Core"
+             xmlns:lists="clr-namespace:Smiech.Wpf.UserManager.Modules.Main.ViewModels.Lists"
+             prism:ViewModelLocator.AutoWireViewModel="True" >
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+            <converters:BooleanConverter x:Key="BooleanConverter" />
+            <converters:NotZeroConverter x:Key="NotZeroConverter" />
+            <converters:NotNullConverter x:Key="NotNullConverter" />
+            <converters:IsZeroConverter x:Key="IsZeroConverter" />
+            <lists:GenderList x:Key="GenderList"></lists:GenderList>
+            <lists:StatusList x:Key="StatusList"></lists:StatusList>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBooleanConverter}}" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" IsEnabled="{Binding Pagination, Converter={StaticResource NotNullConverter}}">
+            <TextBlock> 
+                <Run Text="Page"/>
+                <Run Text="{Binding Pagination.Page}"></Run>
+                <Run Text=" of "/>
+                <Run Text="{Binding Pagination.Pages}"></Run>
+            </TextBlock>
+            <TextBox MinWidth ="25" Text="{Binding Pagination.Page}"></TextBox>
+            <Button Content="Go to page" Command="{Binding GoToPageCommand}" CommandParameter="{Binding Pagination.Page}"></Button>
+            <Button Content="&lt;&lt;" Command="{Binding GoToPreviousPageCommand}"></Button>
+            <Button Content=">>" Command="{Binding GoToNextPageCommand}"></Button>
+        </StackPanel>
+        <DataGrid  Grid.Row="1"
+                   ItemsSource="{Binding UserViewModels}" 
+                   AutoGenerateColumns="False"
+                   CanUserAddRows="True"
+                   CanUserDeleteRows="False">
+            <DataGrid.RowStyle>
+                <Style TargetType="{x:Type DataGridRow}">
+                    <Setter Property="IsEnabled" Value="{Binding IsBusy, Converter={StaticResource InverseBooleanConverter}}"/>
+                </Style>
+            </DataGrid.RowStyle>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Id" Binding="{Binding Id}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Name" Binding="{Binding Name, UpdateSourceTrigger=LostFocus}"/>
+                <DataGridTextColumn Header="Email" Binding="{Binding Email, UpdateSourceTrigger=LostFocus}"/>
+                <DataGridComboBoxColumn Header="Gender" ItemsSource="{StaticResource GenderList}" SelectedValueBinding="{Binding Gender, UpdateSourceTrigger=LostFocus}"/>
+                <DataGridComboBoxColumn Header="Status" ItemsSource="{StaticResource StatusList}" SelectedValueBinding="{Binding Status, UpdateSourceTrigger=LostFocus}"/>
+                <DataGridTextColumn Header="IsDirty" Binding="{Binding IsDirty}" IsReadOnly="True"/>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Content="Update" Margin="1" IsEnabled="{Binding IsDirty, Converter= {StaticResource BooleanConverter}, FallbackValue=false}"
+                                        Command="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                    AncestorType={x:Type UserControl}}, Path=DataContext.UpdateUserCommand}" CommandParameter="{Binding .}">
+                                </Button>
+                                <Button Content="Save" Margin="1" IsEnabled="{Binding Id, Converter= {StaticResource IsZeroConverter}, FallbackValue=false}"
+                                        Command="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                    AncestorType={x:Type UserControl}}, Path=DataContext.CreateUserCommand}" CommandParameter="{Binding .}">
+                                </Button>
+                                <Button Content="Delete" Margin="1" IsEnabled="{Binding Id, Converter = {StaticResource NotZeroConverter }, FallbackValue=false}"
+                                        Command="{Binding RelativeSource={RelativeSource FindAncestor, 
+                                    AncestorType={x:Type UserControl}}, Path=DataContext.DeleteUserCommand}" CommandParameter="{Binding .}">
+                                </Button>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Border Grid.Row="2">
+            <StackPanel Width="200" HorizontalAlignment="Left">
+                <Label Content="Search" HorizontalAlignment="Center"></Label>
+                <Label Content="User ID"></Label>
+                <TextBox Text="{Binding UserQueryViewModel.Id, TargetNullValue=''}"></TextBox>
+                <Label Content="User name"></Label>
+                <TextBox Text="{Binding UserQueryViewModel.Name}"></TextBox>
+                <Label Content="Gender"></Label>
+                <ComboBox ItemsSource="{StaticResource GenderList}" SelectedItem="{Binding UserQueryViewModel.Gender}"></ComboBox>
+                <Label Content="Status"></Label>
+                <ComboBox ItemsSource="{StaticResource StatusList}"  Text="{Binding UserQueryViewModel.Status}"></ComboBox>
+                <Label Content="Email"></Label>
+                <TextBox Text="{Binding UserQueryViewModel.Email}"></TextBox>
+                <Button Content="Search" Command="{Binding GetUsersByQueryCommand}"></Button>
+                <Button Content="Reset search " Command="{Binding ResetUserQueryCommand}"></Button>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>
